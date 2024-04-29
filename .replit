@@ -1,0 +1,7 @@
+run = 'run = "clang-7 -pthread -lm -o main main.cpp \n ./main"'
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+run = ["sh", "-c", 'run = "clang-7 -pthread -lm -o main main.cpp \n ./main"']
