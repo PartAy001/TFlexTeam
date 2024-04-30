@@ -62,7 +62,7 @@ private:
   Space<T> CORE;
   Spaces(TEMP); // must be repair
 public:
-  Spaces(void);
+  Spaces(T);
   Spaces<T> transform();
   Spaces<T> rm();
   Spaces<T> shl();
