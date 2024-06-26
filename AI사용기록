@@ -1,0 +1,104 @@
+C++에서,
+클래스 A가 있고,
+그걸 상속받은 class B가 있는데,
+
+리턴값이나 매개변수값의 타입이 A인 함수는,
+B도 취급하는가?
+
+2.
+
+```
+template <typename T> class Spaces {
+private:
+  Space<T> *CORE;
+  Spaces(Space<T> *, Spaces *); // must be repair //자신을 주는 이유는 추후수정
+                                // 떄문이고, Space를 주는 이유는, 핵심 CORE여서.
+public:
+  Spaces(T);
+  Spaces<T> transform(); // how????, 예가 확실히 추후 구현 감이다.
+  Spaces<T> rm();
+  Spaces<T> shl();
+  Spaces<T> shl(size_t);
+  Spaces<T> shr();
+  Spaces<T> shr(size_t);
+  template <typename T2> Spaces<T2> PillingUpSpace(); // Spaces private
+};
+```
+
+여기서 Space를 상속한 객체도 Space로 취급 가능해?, 참고로 PillingUpSpace의 구현이 서로 달라.
+
+3.
+
+bool은 1byte판정 (실질1bit)
+나머지는 정상적으로 비트 구할수 있음
+
+그럼...
+
+`typedef bool[x] typex`에서 x가 10이면
+
+(x는 8n+m(단. m<7)의 집합에 속하지만 GPT이새끼가 이해할리가 없다.)
+
+실제로 해야하는 질문
+
+`typedef bool[10] type10` 에서
+sizeof(type10)은?
+
+4. bit가 10인 타입을 만드는 법
+
+답변 : 
+C++에서 10비트 크기의 사용자 정의 데이터 타입을 만드는 방법은 다음과 같습니다:
+
+1. `struct`를 사용하여 비트 필드(bit-field)를 정의하는 방법
+2. `std::bitset`을 사용하는 방법
+
+1. `struct`를 사용하여 비트 필드 정의하기:
+
+```cpp
+#include <iostream>
+
+struct MyBitType {
+    unsigned int value : 10; // 10비트 크기의 비트 필드
+};
+
+int main() {
+    MyBitType myBit;
+    std::cout << "Size of MyBitType: " << sizeof(MyBitType) << " bytes" << std::endl; // 2 bytes (16 bits)
+
+    myBit.value = 0b1010101010; // 10비트 값 할당
+    std::cout << "Value: " << myBit.value << std::endl; // 출력: 682
+
+    return 0;
+}
+```
+
+이 방법에서는 `struct` 내에 `:10`과 같이 비트 필드 크기를 지정하여 10비트 크기의 데이터 타입을 정의합니다. 실제로는 2 bytes(16 bits)의 메모리를 사용하지만, 10비트만 사용할 수 있습니다.
+
+2. `std::bitset`을 사용하는 방법:
+
+```cpp
+#include <iostream>
+#include <bitset>
+
+int main() {
+    std::bitset<10> myBitset; // 10비트 크기의 비트셋 생성
+    std::cout << "Size of std::bitset<10>: " << sizeof(std::bitset<10>) << " bytes" << std::endl; // 2 bytes (16 bits)
+
+    myBitset.set(0); // 0번째 비트 설정
+    myBitset.flip(5); // 5번째 비트 반전
+    std::cout << "Value: " << myBitset << std::endl; // 출력: 1000000001
+
+    return 0;
+}
+```
+
+`std::bitset`은 C++ 표준 라이브러리에서 제공하는 비트 집합 클래스입니다. 템플릿 인자로 비트 크기를 지정하여 10비트 크기의 비트셋을 생성할 수 있습니다. 이 방법 역시 실제로는 2 bytes(16 bits)의 메모리를 사용하지만, 10비트만 사용할 수 있습니다.
+
+두 가지 방법 모두 10비트 크기의 사용자 정의 데이터 타입을 만들 수 있습니다. 필요에 따라 적절한 방법을 선택하면 됩니다. 
+
+이런 자료를 참고했어요.
+[1] YouTube - 타입비트만들기 (https://m.youtube.com/hashtag/%ED%83%80%EC%9E%85%EB%B9%84%ED%8A%B8%EB%A7%8C%EB%93%A4%EA%B8%B0)
+[2] velog - [TypeScript] 여러 타입 선언 방법과 interface & type Alias 비교 (https://velog.io/@skawnkk/interface-type-Alias)
+[3] Naver Blog - 컴퓨터가 10진수 숫자(정수)를 표현 하는 방법, 2 ... (https://blog.naver.com/badwin/221179926161)
+[4] 솔리디티 공식 문서 - 타입 — Solidity 0.5.10 documentation (https://solidity-kr.readthedocs.io/ko/latest/types.html) 
+
+나는 bitset을 쓰겠음

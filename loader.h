@@ -1,7 +1,7 @@
 #ifndef _LOADER_H
 #define _LOADER_H
 
-#include <stdbool.h>
+#include <stdbool.h> //이게 제발 1비트판정나야하는데... bool...
 #include <stddef.h>
 
 typedef void *pnt;                   // pointer
@@ -9,7 +9,7 @@ typedef void (*pfn)(void *, void *); // void f(any*, any*) func pointer
 typedef size_t FakeType;
 
 typedef struct {
-  struct faketypes { // type bit length
+  struct faketypes { // type bit length, bitset을 사용해서 구현할것.
     FakeType DIR;
     FakeType FILE;
     FakeType FILESTRC;
@@ -25,7 +25,7 @@ typedef struct {
     };
 
     struct FileNFileStrc {
-      pfn FILE2FILESTRC; // FILESTRC def need (추후)
+      pfn FILE2FILESTRC; // FILESTRC def need (추후), size는...
       pfn FILESTRC2FILE;
     };
 
@@ -62,11 +62,13 @@ typedef bool TEMP; // see line 59 comment at class Spaces private constructer
 template <typename T> class Spaces {
 private:
   Space<T> *CORE;
+  dlibs Dlibs;                  //상속시 선언, 추가된 항목임
+  bool isLoad;                  //정방향 연산인지?, 추가된 항목임.
   Spaces(Space<T> *, Spaces *); // must be repair //자신을 주는 이유는 추후수정
                                 // 떄문이고, Space를 주는 이유는, 핵심 CORE여서.
 public:
   Spaces(T);
-  Spaces<T> transform(); // how????, 예가 확실히 추후 구현 감이다.
+  Spaces<T> transform(); // sizeof로 switch한다.
   Spaces<T> rm();
   Spaces<T> shl();
   Spaces<T> shl(size_t);

@@ -21,6 +21,18 @@ void f1(bool, I *, O *); //이것도 뭔가 ㅈㄴ 복잡한거 실행하게 불
 //???
 
 template <typename T> Spaces<T>::Spaces(T data) { this.CORE = &newSpace(data); }
+template <typename T> Spaces<T>::transform() {
+  
+  switch (sizeof(T)) {
+    case this.Dlibs.faketypes.DIR:
+      if (this.isLoad) {
+        this.Dlibs.Functions.DirNFileArr.DIR2FILEArr();
+      } else {
+        this.Dlibs.Functions.DirNFileArr.FILEArr2Dir();
+      }
+      break;
+  }
+}
 template <typename T> Spaces<T> Spaces<T>::rm() { this.CORE.core.data = 0; }
 template <typename T> Spaces<T> Spaces<T>::shl() {
   this.CORE << 1;
