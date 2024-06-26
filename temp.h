@@ -77,7 +77,7 @@ Spaces<T, TypeFileStrc>::transform() {
   // }
   // ㄹㅇㅋㅋ (실성)
 
-  return this
+  return this;
 }
 template <typename T, typename TypeFileStrc>
 Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::rm() {
