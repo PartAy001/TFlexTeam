@@ -1,5 +1,5 @@
-#ifndef _TEMP_H
-#define _TEMP_H
+#ifndef _LOADER_H
+#define _LOADER_H
 
 #include "loader.h"
 #include <cassert>

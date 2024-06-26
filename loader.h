@@ -1,88 +1,115 @@
 #ifndef _LOADER_H
 #define _LOADER_H
 
-#include <stdbool.h> //이게 제발 1비트판정나야하는데... bool...
-#include <stddef.h>
+#include "loader.h"
+#include <cassert>
 
-typedef void *pnt;                   // pointer
-typedef void (*pfn)(void *, void *); // void f(any*, any*) func pointer
-typedef size_t FakeType;
+#define ELIF else if
+#define elif ELIF
 
-typedef struct {
-  struct faketypes { // type bit length, bitset을 사용해서 구현할것, 어...보니까
-                     // 이거... dlib에서 리턴되는건데.... 오우쉣.
-    FakeType DIR;  // split기준이 뭐였징...
-    FakeType FILE; //예도 뭐였는지...
-    FakeType FILESTRC;
-    FakeType FILEDATA;
-    FakeType FILEINFO; // JUST INFO, metadata
-    FakeType FILENAME; // HEADER
-    FakeType FILEVALU; // BODY
-  };
-  struct Functions {
-    struct DirNFileArr {
-      pfn DIR2FILEArr; // FILE[]
-      pfn FILEArr2Dir;
-    };
+template <typename T> union Space<T> newSpace(T data) {
+  union Space<T> ret;
+  ret.core.data = data;
+  return ret;
+}
 
-    struct FileNFileStrc {
-      pfn FILE2FILESTRC;
-      pfn FILESTRC2FILE;
-    };
-
-    struct FileStrcNFileData {
-      pfn FILESTRC2FILEDATA;
-      pfn FILEDATA2FILESTRC;
-    };
-  };
-} dlibs; // dlib function pointer like-libs
-
-template <typename T> struct SpaceCore {
-  T empty;
-  T data;
-};
-
-template <typename T> union Space {
-  struct Memory {
-    bool core[sizeof(T) *
-              2]; // this is core part, settin' a SpaceCore's Everythin'
-  };
-  SpaceCore<T> core;
-};
-
-template <typename T> union Space<T> newSpace(T data); // vervatim
+//???
 
 template <typename I, typename O>
-void f1(I *, O *); // I로 받은 변수를 O로 보내니... 하...
+void f1(I *, O *);
 // ha... fuck....
-template <typename I, typename O> void f1(bool, I *, O *);
+template <typename I, typename O>
+void f1(bool, I *, O *); //이것도 뭔가 ㅈㄴ 복잡한거 실행하게 불넣는거 ㅠㅠㅠ
+                         //하아 개빡새내 왜이러냐 과거의나...
 
-typedef bool TEMP; // see line 59 comment at class Spaces private constructer
-                   // prototype argv type TEMP
+//???
 
 template <typename T, typename TypeFileStrc>
-class Spaces { // TypeFileStrc는 설계 구현에서 추상화성땜에, 생각조차 못했음.
-private:
-  Space<T> *CORE;
-  dlibs *Dlibs; //상속시 포인터 선언, 추가된 항목임
-  bool isLoad; //정방향 연산인지? (, 상속시 선언.), 추가된 항목임.
-  Spaces(Space<T, TypeFileStrc> *,
-         Spaces *); // must be repair //자신을 주는 이유는 추후수정
-                    // 떄문이고, Space를 주는 이유는, 핵심 CORE여서.
-public:
-  Spaces(T);
-  Spaces<T, TypeFileStrc>
-  transform(); // sizeof로 switch한다, 근데 이거 분명히 매개변수가 있었던것
-               // 같다고 기억한다... 하.....
-               // 천하의 ㅅㅂ 로스트태크, 하 버스에서 잃어버린 퍼거새끼(나)땜에,
-               // 인류는 오늘도 암걸려 뒤져간ㄷR TLQKF@!!!!!!!! GKSK TLQKF!!!!!
-  Spaces<T, TypeFileStrc> rm();
-  Spaces<T, TypeFileStrc> shl();
-  Spaces<T, TypeFileStrc> shl(size_t);
-  Spaces<T, TypeFileStrc> shr();
-  Spaces<T, TypeFileStrc> shr(size_t);
-  template <typename T2>
-  Spaces<T2, TypeFileStrc> PillingUpSpace(); // Spaces private
-};
+Spaces<T, TypeFileStrc>::Spaces(T data, temp f) {
+  this.CORE = &newSpace(data);
+  this.getcore = f;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc>::transform() {
+
+  switch (sizeof(T)) {
+  case this.Dlibs.faketypes.DIR: // FILEArr이랑 길이가 같다... ㅁㅊ...
+    if (this.isLoad) {
+      this.Dlibs.Functions.DirNFileArr.DIR2FILEArr();
+    } else {
+      this.Dlibs.Functions.DirNFileArr.FILEArr2Dir();
+    };
+    break;
+
+  case this.Dlibs.faketypes
+      .FILE: //일단은 크게는 문제는 없다, 근데 예, FILESTRC랑 길이가 같다...
+             //후...., ㅈㄴ어렵개 설계했네, 과거의 나 그저 G.O.A.T..... 이딴걸
+             //쉬운거 취급하다니...
+    if (std::is_same_v<T, TypeFileStrc> && this.isLoad) {
+      this.Dlibs.Functions.FileNFileStrc.FILESTRC2FILEDATA();
+    }
+    elif (std::is_same_v<T, TypeFileStrc>) {
+      this.Dlibs.Functions.FileNFileStrc.FILESTRC2FILE();
+    }
+    elif (this.isLoad) { this.Dlibs.Functions.FileNFileStrc.FILE2FILESTRC(); }
+    else {
+      bool isTryingFileArr2DirNotFile2Dir = false;
+      assert(isTryingFileArr2DirNotFile2Dir); // File can't be.
+    };
+  case this.Dlibs.faketypes
+      .FILEDATA: //이마트24~~새로운 삶의 시작이죠~~~ 이마트24~~ 행복이가득~
+                 //사랑이 가득 이마트24에서 미적하던 그때가난 더 좋았어난 빙빙
+                 //돌아가는 핼적화 인생처럼 점점떨어지는 내 지능처럼
+                 //ㅅㅂ그러다가완전개ㅈ되는비비바른배우ㅅㄲ처럼 ㅅㅄㅄㅄㅄㅂ
+                 //하하 이제부터 치킨 먹을꺼야
+                 //ㅇ애려ㅑㄷㄱ저ㅐㅑㄴ허ㅑ에하으헤ㅔㅎ헤ㅔㅎ허댜낭ㄹㅇㅈ개허ㅑㅈ갼멓려ㅑㅁㄸ거ㅏㅗㅇ려ㅑ헐겨ㅑㄷㄴ오혀ㅑㅈ4ㄱ도녀ㅑㅇㅎㅅ
+    assert(~this.isLoad) // Already Loaded, now can dump.
+        this.Dlibs.Function.FileStrcNFileData.FILEDATA2FILESTRC;
+    break;
+  };
+
+  // case this.Dlibs.faketypes
+  //     .F: //기준을 모르겠다 ㅠㅠ, 분명히 로드시에 구분이 되야하는데.., 에초에
+  //         //크기비교가 아니었다는 증거다 이건.
+  //   if (this.isLoad) {
+  //     this.Dlibs.Functions.FileNFileStrc.FILE2FILESTRC();
+  //   }
+  //   break;
+  // }
+  // ㄹㅇㅋㅋ (실성)
+
+  return this;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::rm() {
+  this.CORE.core.data = 0;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::shl() {
+  this.CORE << 1;
+  return this;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::shl(size_t N) {
+  this.CORE << N;
+  return this;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::shr() {
+  this.CORE << 1;
+  return this;
+}
+template <typename T, typename TypeFileStrc>
+Spaces<T, TypeFileStrc> Spaces<T, TypeFileStrc>::shr(size_t N) {
+  this.CORE >> N;
+  return this;
+}
+
+//???
+
+template <typename T, typename TypeFileStrc>
+template <typename T2>
+Spaces<T2, TypeFileStrc> Spaces<T, TypeFileStrc>::PillingUpSpace();
+//???
 
 #endif
