@@ -4,6 +4,8 @@
 #include "loader.h"
 #include <cassert>
 
+#define ELIF else if
+
 template <typename T> union Space<T> newSpace(T data) {
   union Space<T> ret;
   ret.core.data = data;
@@ -41,12 +43,12 @@ Spaces<T, TypeFileStrc>::transform() {
       .FILE: //일단은 크게는 문제는 없다, 근데 예, FILESTRC랑 길이가 같다...
              //후...., ㅈㄴ어렵개 설계했네, 과거의 나 그저 G.O.A.T..... 이딴걸
              //쉬운거 취급하다니...
-    if (std::is_same_v<T, TypeFileStrc>)
-      if (this.isLoad) {
+    if (std::is_same_v<T, TypeFileStrc> && this.isLoad){
         this.Dlibs.Functions.FileNFileStrc.FILE2FILESTRC();
       } else {
         this.Dlibs.Functions.FileNFileStrc.FILESTRC2FILE();
       };
+    } elif ()
     break;
 
   case this.Dlibs.faketypes

@@ -1,0 +1,131 @@
+Q. C앙(@CLover)
+왜
+
+#define ELIF else if
+#define elif ELIF
+는 되는대
+
+#define elif else if
+
+는 않되???
+
+A.
+네, 맞습니다. 
+
+```c
+#define ELIF else if
+#define elif ELIF
+```
+
+이 코드는 동작합니다.
+
+반면에,
+
+```c
+#define elif else if
+```
+
+이 코드는 동작하지 않습니다.
+
+그 이유는 다음과 같습니다:
+
+1. `#define ELIF else if`와 `#define elif ELIF`
+   - `ELIF`를 `else if`로 정의하고, `elif`를 `ELIF`(즉, `else if`)로 정의합니다.
+   - 이렇게 하면 `elif`가 `else if`로 치환됩니다.
+
+2. `#define elif else if`
+   - 이 경우 `elif`를 `else if`로 직접 정의하고 있습니다.
+   - 하지만 `elif`는 C/C++에서 예약된 키워드이므로, 이를 다른 문자열로 치환할 수 없습니다.
+   - 따라서 이 코드는 컴파일 에러가 발생합니다.
+
+즉, 예약된 키워드인 `elif`는 직접 다른 문자열로 치환할 수 없지만, 두 단계를 거쳐서 간접적으로 치환할 수는 있습니다.
+
+따라서 `#define ELIF else if`와 `#define elif ELIF`는 동작하지만, `#define elif else if`는 동작하지 않습니다. 
+
+이런 자료를 참고했어요.
+[1] 네이버 블로그 - 파이썬 9)조건문 if, 논리연산자, 다중if(elif) - 네이버 블로그 (https://m.blog.naver.com/redqoralsrl/221964347901)
+[2] 코드잇 - elif문 마지막은 else로 해야하나요? (https://www.codeit.kr/community/questions/UXVlc3Rpb246NjI4MzE1ODQ0YjZhMDA0YjY1YTQ4YTRh)
+[3] 티스토리 - if /else/elif 란? - 정쌤의 IT 블로그 (https://jeong-teacher.tistory.com/12)
+[4] 코드잇 - if 두번 써도 괜찮은가요...? (https://www.codeit.kr/community/questions/UXVlc3Rpb246NWUzNDUyMjU4MGU1MTMzNzNkOTYxZjdh) 
+
+과거..... 질문을 한 C앙
+
+Q. #define elif else if 이거 작동하지?
+A. 아니요, `#define elif else if`는 작동하지 않습니다.
+
+C/C++에서 `#define`은 전처리기 지시어로, 매크로를 정의하는데 사용됩니다. 이를 통해 특정 문자열을 다른 문자열로 치환할 수 있습니다.
+
+하지만 `elif`는 C/C++에서 예약된 키워드로, 전처리기 매크로로 정의할 수 없습니다. 따라서 `#define elif else if`와 같은 정의는 유효하지 않습니다.
+
+올바른 사용 예시는 다음과 같습니다:
+
+```cpp
+#define ELIF else if
+```
+
+이렇게 정의하면 `ELIF`를 `else if`로 치환할 수 있습니다. 예를 들어:
+
+```cpp
+if (condition1) {
+    // do something
+}
+ELIF (condition2) {
+    // do something else
+}
+else {
+    // do the rest
+}
+```
+
+하지만 이것은 가독성을 떨어뜨리고 코드를 복잡하게 만들 수 있기 때문에, 일반적으로 권장되지 않습니다. 대신 일반적인 `if-else` 문을 사용하는 것이 더 좋습니다. 
+
+"WHAT??!?!?!?!??!?!?"
+
+이걸 피해보려고 질문을 또 한 C앙
+
+Q. #define elif ELIF는 작동해?
+A. 네, `#define elif ELIF`와 같은 정의는 작동합니다.
+
+C/C++에서 `#define`은 전처리기 지시어로, 매크로를 정의하는데 사용됩니다. 이를 통해 특정 문자열을 다른 문자열로 치환할 수 있습니다.
+
+`elif`는 C/C++에서 예약된 키워드이므로, 이를 다른 문자열로 치환할 수 있습니다. 따라서 `#define elif ELIF`와 같은 정의는 유효합니다.
+
+예를 들어:
+
+```cpp
+#include <iostream>
+
+#define elif ELIF
+
+int main() {
+    int x = 10;
+
+    if (x > 0) {
+        std::cout << "x is positive" << std::endl;
+    }
+    ELIF (x < 0) {
+        std::cout << "x is negative" << std::endl;
+    }
+    else {
+        std::cout << "x is zero" << std::endl;
+    }
+
+    return 0;
+}
+```
+
+위 코드에서 `ELIF`는 `elif`로 치환되어 동작합니다.
+
+이와 같이 `#define`을 사용하여 `elif`를 다른 문자열로 치환할 수 있습니다. 하지만 이러한 방식은 코드의 가독성을 떨어뜨릴 수 있으므로, 일반적으로 권장되지 않습니다. 대신 일반적인 `if-else` 문을 사용하는 것이 더 좋습니다. 
+
+이런 자료를 참고했어요.
+[1] velog - [Python] if, elif 차이와 작동방식 (https://velog.io/@k_bobin/Python-if-elif-%EC%B0%A8%EC%9D%B4%EC%99%80-%EC%9E%91%EB%8F%99%EB%B0%A9%EC%8B%9D)
+[2] 위키독스 - 2.2 조건문(if-elif-else) - 왕초보를 위한 Python (https://wikidocs.net/57)
+[3] 인천일보아카데미 - [Python 기초] 파이썬 조건문 if, elif, else 구조의 활용 (https://www.icia.co.kr/community/board/view/2/1/146)
+[4] 네이버 블로그 - [Python] 파이썬 조건문(if, elif, else) 개념편 - 네이버 블로그 (https://m.blog.naver.com/passionisall/221829410558) 
+
+"나-닛, 이1게 무슨소리야..., 파테는 존1나 당황했다, "이게 그 유명한 Hullucination?""
+
+"히!... 히히!!..."
+
+그랬던것이다...
