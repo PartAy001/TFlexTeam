@@ -102,3 +102,48 @@ int main() {
 [4] 솔리디티 공식 문서 - 타입 — Solidity 0.5.10 documentation (https://solidity-kr.readthedocs.io/ko/latest/types.html) 
 
 나는 bitset을 쓰겠음
+
+추가로
+
+네, C++에서 템플릿 매개변수 `T`도 switch 문으로 체크할 수 있습니다. 이를 위해서는 `std::enable_if` 또는 `std::is_same` 등의 메타프로그래밍 기법을 사용할 수 있습니다.
+
+예를 들어, 다음과 같은 코드로 `T`의 타입에 따라 다른 동작을 수행할 수 있습니다:
+
+```cpp
+template <typename T>
+void myFunction() {
+    if constexpr (std::is_same_v<T, int>) {
+        // int 타입일 때의 동작
+    } else if constexpr (std::is_same_v<T, double>) {
+        // double 타입일 때의 동작
+    } else {
+        // 그 외의 타입일 때의 동작
+    }
+}
+```
+
+여기서 `std::is_same_v<T, int>` 와 같은 메타함수를 사용하여 `T`의 타입을 체크하고, 그에 따른 동작을 수행할 수 있습니다.
+
+또한, `std::enable_if`를 사용하여 특정 조건에 따라 함수의 오버로딩을 선택할 수도 있습니다:
+
+```cpp
+template <typename T, typename = std::enable_if_t<std::is_integral_v<T>>>
+void integerFunction() {
+    // 정수 타입일 때의 동작
+}
+
+template <typename T, typename = std::enable_if_t<std::is_floating_point_v<T>>>
+void floatFunction() {
+    // 부동 소수점 타입일 때의 동작
+}
+```
+
+이와 같은 방식으로 템플릿 매개변수 `T`의 타입에 따라 다른 동작을 수행할 수 있습니다. 
+
+이런 자료를 참고했어요.
+[1] 공부 기록장 💻 - [C++] 템플릿(Template) - 제네릭 함수(Generic ... - 공부 기록장 (https://dream-and-develop.tistory.com/104)
+[2] 닷넷코리아 - 14 조건문: switch 문으로 다양한 조건 처리하기 (https://www.dotnetkorea.com/docs/c-language/14-switch/switch-statement/)
+[3] Naver Blog - C++20 - 새로운 문법, 표준 라이브러리 기능 소개 (https://blog.naver.com/kmc7468/221708166955)
+[4] 티스토리 - [C++11] 템플릿으로 배열을 함수에 넘기기 (https://karupro.tistory.com/13) 
+
+라고 말한 기록이 있음.

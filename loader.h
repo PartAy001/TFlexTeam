@@ -9,9 +9,10 @@ typedef void (*pfn)(void *, void *); // void f(any*, any*) func pointer
 typedef size_t FakeType;
 
 typedef struct {
-  struct faketypes { // type bit length, bitset을 사용해서 구현할것.
-    FakeType DIR;
-    FakeType FILE;
+  struct faketypes { // type bit length, bitset을 사용해서 구현할것, 어...보니까
+                     // 이거... dlib에서 리턴되는건데.... 오우쉣.
+    FakeType DIR;  // split기준이 뭐였징...
+    FakeType FILE; //예도 뭐였는지...
     FakeType FILESTRC;
     FakeType FILEDATA;
     FakeType FILEINFO; // JUST INFO, metadata
@@ -25,7 +26,7 @@ typedef struct {
     };
 
     struct FileNFileStrc {
-      pfn FILE2FILESTRC; // FILESTRC def need (추후), size는...
+      pfn FILE2FILESTRC;
       pfn FILESTRC2FILE;
     };
 
@@ -59,22 +60,29 @@ template <typename I, typename O> void f1(bool, I *, O *);
 typedef bool TEMP; // see line 59 comment at class Spaces private constructer
                    // prototype argv type TEMP
 
-template <typename T> class Spaces {
+template <typename T, typename TypeFileStrc>
+class Spaces { // TypeFileStrc는 설계 구현에서 추상화성땜에, 생각조차 못했음.
 private:
   Space<T> *CORE;
-  dlibs Dlibs;                  //상속시 선언, 추가된 항목임
-  bool isLoad;                  //정방향 연산인지?, 추가된 항목임.
-  Spaces(Space<T> *, Spaces *); // must be repair //자신을 주는 이유는 추후수정
-                                // 떄문이고, Space를 주는 이유는, 핵심 CORE여서.
+  dlibs *Dlibs; //상속시 포인터 선언, 추가된 항목임
+  bool isLoad; //정방향 연산인지? (, 상속시 선언.), 추가된 항목임.
+  Spaces(Space<T, TypeFileStrc> *,
+         Spaces *); // must be repair //자신을 주는 이유는 추후수정
+                    // 떄문이고, Space를 주는 이유는, 핵심 CORE여서.
 public:
   Spaces(T);
-  Spaces<T> transform(); // sizeof로 switch한다.
-  Spaces<T> rm();
-  Spaces<T> shl();
-  Spaces<T> shl(size_t);
-  Spaces<T> shr();
-  Spaces<T> shr(size_t);
-  template <typename T2> Spaces<T2> PillingUpSpace(); // Spaces private
+  Spaces<T, TypeFileStrc>
+  transform(); // sizeof로 switch한다, 근데 이거 분명히 매개변수가 있었던것
+               // 같다고 기억한다... 하.....
+               // 천하의 ㅅㅂ 로스트태크, 하 버스에서 잃어버린 퍼거새끼(나)땜에,
+               // 인류는 오늘도 암걸려 뒤져간ㄷR TLQKF@!!!!!!!! GKSK TLQKF!!!!!
+  Spaces<T, TypeFileStrc> rm();
+  Spaces<T, TypeFileStrc> shl();
+  Spaces<T, TypeFileStrc> shl(size_t);
+  Spaces<T, TypeFileStrc> shr();
+  Spaces<T, TypeFileStrc> shr(size_t);
+  template <typename T2>
+  Spaces<T2, TypeFileStrc> PillingUpSpace(); // Spaces private
 };
 
 #endif
